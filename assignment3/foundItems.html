@@ -1,0 +1,14 @@
+<br>
+<h3>Relevant Menu Items</h3>
+<ul>
+	<div ng-repeat="found_item in foundItems">
+	<li>
+		Short Name: {{ found_item.short_name }},
+		Name: {{ found_item.name }},
+		Description: {{ found_item.description }}.
+		<button ng-click="onRemove({index: $index});">Don't want this one!</button>
+	</li>
+	</div>
+</ul>
+
+<div ng-if="!foundItems.length" id="nothing">Nothing found.</div>

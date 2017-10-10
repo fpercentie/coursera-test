@@ -50,7 +50,3 @@ input[type="text"] {
     transform: rotate(360deg);
   }
 }
-
-#nothing {
-  font-size: 32px;
-}

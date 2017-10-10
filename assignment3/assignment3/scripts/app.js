@@ -7,12 +7,11 @@ angular.module('NarrowItDownApp', [])
 
 function FoundItemsDirective() {
 	var ddo = {
-		templateUrl: 'foundItems.html',
-		restrict: 'E',
+		templateUrl: 'foundItemsTemplate.html',
 		scope: {
-			foundItems: '<',
+			items: '<' ,
 			onRemove: '&' 
-		}
+		},
 		// controller: NarrowItDownController,
 		// controllerAs: 'NarrowIt',
 		// bindToController: true
@@ -22,21 +21,14 @@ function FoundItemsDirective() {
 
 NarrowItDownController.$inject = ['MenuSearchService'];
 
-
-
 function NarrowItDownController(MenuSearchService){
 	var nid = this;
 
 	nid.found = [];
 	nid.search_term = "";
 
-	nid.searchItems = function(){
-		var promise = MenuSearchService.getMatchedMenuItems(nid.search_term);
-		promise.then(function(response) {
-			nid.found = response;
-		}).catch (function(error){
-      	console.log("Something went wrong!");
-    	});
+	nid.searchItems = function(search_term){
+		nid.found = MenuSearchService.getMatchedMenuItems(search_term);
 	};
 
 	nid.remove = function(index){
@@ -50,26 +42,27 @@ function MenuSearchService($http){
 	var service = this;
 
 	service.getMatchedMenuItems = function(searchTerm){
+		var searchTerm = searchTerm;
 	//calls $http and return searchTerms that match searchTerm
-		var response = $http({
+	return $http({
 			method: "GET",
 			url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
 			}).then(function(result){
 				//process result and only keep items that match
-				var items = result.data.menu_items;
+				var response = result.data;
 				var foundItems = [];
-				for(var i=0; i<items.length; i++){
-					var look = items[i]["description"];
-					if (look.indexOf(searchTerm) !== -1){
-						console.log(searchTerm);
-				 		foundItems.push(items[i]);
-					}
-		 		}
-		 		console.log(foundItems);
+				for(var i=0; i<response.menu_items.length; i++){
+					var look = response.menu_items[i]["description"];
+				 	if (look.indexOf(searchTerm) !== -1){
+				 		foundItems.push(response.menu_items[i]);
+				 	}
+				 }
+				 console.log(foundItems);
+
 				//return processed items
-			 	return foundItems;;
-			 });
-		return response;
+				return foundItems;
+			});
+
 	};
 
 };
