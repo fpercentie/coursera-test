@@ -1,0 +1,9 @@
+<br>
+<h3>Relevant Menu Items</h3>
+<ul>
+	<li ng-repeat="menu_item in NarrowIt.found">
+		Short Name: {{ menu_item.short_name }},
+		Name: {{ menu_item.name }},
+		Description: {{ menu_item.description }}.
+		<button ng-click="NarrowIt.onRemove({index: $index});">Remove Item</button></li>
+</ul>
